@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  deadline    DateTime
+  startedAt   DateTime?
+  completedAt DateTime?
+  status      String   @default("pending") // pending | in_progress | completed | failed | abandoned
+  score       Int?
+  penalty     Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Stats {
+  id           String @id @default("singleton")
+  totalScore   Int    @default(0)
+  streak       Int    @default(0)
+  bestStreak   Int    @default(0)
+  tasksTotal   Int    @default(0)
+  tasksOnTime  Int    @default(0)
+  tasksFailed  Int    @default(0)
+  updatedAt    DateTime @updatedAt
+}
