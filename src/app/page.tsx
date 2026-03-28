@@ -50,14 +50,14 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [fetchAll]);
 
-  const filteredTasks = tasks.filter((t) => {
+  const filteredTasks = Object.values(tasks).filter((t) => {
     if (filter === "active") return t.status === "pending" || t.status === "in_progress";
     if (filter === "completed") return t.status === "completed";
     if (filter === "failed") return t.status === "failed" || t.status === "abandoned";
     return true;
   });
 
-  const activeTasks = tasks.filter(
+  const activeTasks = Object.values(tasks).filter(
     (t) => t.status === "pending" || t.status === "in_progress"
   );
   const overdueCount = activeTasks.filter(
@@ -66,8 +66,8 @@ export default function Home() {
 
   const tabs: { key: FilterTab; label: string }[] = [
     { key: "active", label: `ACTIVE (${activeTasks.length})` },
-    { key: "completed", label: `DONE (${tasks.filter((t) => t.status === "completed").length})` },
-    { key: "failed", label: `FAILED (${tasks.filter((t) => t.status === "failed" || t.status === "abandoned").length})` },
+    { key: "completed", label: `DONE (${Object.values(tasks).filter((t) => t.status === "completed").length})` },
+    { key: "failed", label: `FAILED (${Object.values(tasks).filter((t) => t.status === "failed" || t.status === "abandoned").length})` },
     { key: "all", label: "ALL" },
   ];
 
