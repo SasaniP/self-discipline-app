@@ -16,7 +16,7 @@ export default function Home() {
   const [showAdd, setShowAdd] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterTab>("active");
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState<Date | null>(null);
 
   // Live clock
   useEffect(() => {
@@ -72,7 +72,9 @@ export default function Home() {
   ];
 
   const padTwo = (n: number) => String(n).padStart(2, "0");
-  const clockStr = `${padTwo(time.getHours())}:${padTwo(time.getMinutes())}:${padTwo(time.getSeconds())}`;
+  const clockStr = time
+  ? `${padTwo(time.getHours())}:${padTwo(time.getMinutes())}:${padTwo(time.getSeconds())}`
+  : "--:--:--";
 
   return (
     <div className="min-h-screen bg-[#080B0F] text-[#C8D8E4]">
@@ -101,10 +103,12 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
               <div className="font-['Bebas_Neue'] text-2xl tracking-widest text-[#6B8699]">
-                {clockStr}
+                {time ? clockStr : "--:--:--"}
               </div>
               <div className="text-[9px] text-[#3D5060] tracking-widest">
-                {time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }).toUpperCase()}
+                {time
+                  ? time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }).toUpperCase()
+                  : "---"}
               </div>
             </div>
             <button
